@@ -81,24 +81,28 @@ class tool_uploadcourse_helper_testcase extends advanced_testcase {
             'enrolment_5' => 'flatfile',
         );
         $expected = array(
-            'self' => array(
+            2 => array(
+                'method' => 'self',
                 'delete' => '1',
                 'foo' => 'a',
                 'bar' => '1',
             ),
-            'manual' => array(
+            3 => array(
+                'method' => 'manual',
                 'disable' => '2',
                 'foo' => 'b',
                 'bar' => '2',
             ),
-            'database' => array(
+            4 => array(
+                'method' => 'database',
                 'foo' => 'x',
                 'bar' => '3',
             ),
-            'flatfile' => array(
+            5 => array(
                 'test3' => 'test3',
                 'test2' => 'test2',
                 'test1' => 'test1',
+                'method' => 'flatfile',
             )
         );
         $this->assertSame(tool_uploadcourse_helper::get_enrolment_data($data), $expected);

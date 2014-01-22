@@ -150,6 +150,7 @@ class tool_uploadcourse_helper {
                 }
                 if (empty($matches[3])) {
                     $enrolmethods[$key] = $value;
+                    $enroloptions[$key]['method'] = $value;
                 } else {
                     $enroloptions[$key][$matches[3]] = $value;
                 }
@@ -165,7 +166,7 @@ class tool_uploadcourse_helper {
                     // Error!
                     continue;
                 }
-                $enrolmentdata[$enrolmethods[$key]] = $enroloptions[$key];
+                $enrolmentdata[$key] = $enroloptions[$key];
             }
         }
         return $enrolmentdata;

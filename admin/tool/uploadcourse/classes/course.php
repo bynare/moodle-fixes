@@ -771,11 +771,12 @@ class tool_uploadcourse_course {
 
         $enrolmentplugins = tool_uploadcourse_helper::get_enrolment_plugins();
         $instances = enrol_get_instances($course->id, false);
-        foreach ($enrolmentdata as $enrolmethod => $method) {
-
+        foreach ($enrolmentdata as $key => $method) {
+            $enrolmethod = $method['method'];
+            $enrolname = isset($method['name']) ? $method['name'] : '';
             $instance = null;
             foreach ($instances as $i) {
-                if ($i->enrol == $enrolmethod) {
+                if ($i->enrol == $enrolmethod && $enrolname == $i->name) {
                     $instance = $i;
                     break;
                 }
@@ -808,7 +809,15 @@ class tool_uploadcourse_course {
             } else {
                 $plugin = null;
                 if (empty($instance)) {
+                    // add a new instance
                     $plugin = $enrolmentplugins[$enrolmethod];
+
+                    $newinstancelink = $plugin->get_newinstance_link($course->id);
+                    if (empty($newinstancelink)) {
+                        // this means we cannot add another instance of this enrolment method to the course, so skip
+                        continue;
+                    }
+
                     $instance = new stdClass();
                     $instance->id = $plugin->add_default_instance($course);
                     $instance->roleid = $plugin->get_config('roleid');

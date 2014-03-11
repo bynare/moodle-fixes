@@ -189,6 +189,24 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
     }
 
     /**
+     * Returns the file types accepted by the file manager.
+     *
+     * @return int
+     */
+    function getAcceptedtypes() {
+        return $this->_options['accepted_types'];
+    }
+
+    /**
+     * Sets the file types that are accepted by the file manager.
+     *
+     * @param int $num number of files
+     */
+    function setAcceptedtypes($types) {
+        $this->_options['accepted_types'] = $types;
+    }
+
+    /**
      * Returns html for help button.
      *
      * @return string html for help button

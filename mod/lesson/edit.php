@@ -40,7 +40,7 @@ require_capability('mod/lesson:manage', $context);
 $mode    = optional_param('mode', get_user_preferences('lesson_view', 'collapsed'), PARAM_ALPHA);
 $PAGE->set_url('/mod/lesson/edit.php', array('id'=>$cm->id,'mode'=>$mode));
 
-if ($mode != get_user_preferences('lesson_view', 'collapsed') && $mode !== 'single') {
+if ($mode != get_user_preferences('lesson_view', 'collapsed') && in_array($mode, array('full', 'collapsed'))) {
     set_user_preference('lesson_view', $mode);
 }
 
@@ -54,9 +54,6 @@ if (!$lesson->has_pages()) {
     echo $lessonoutput->add_first_page_links($lesson);
 } else {
     switch ($mode) {
-        case 'collapsed':
-            echo $lessonoutput->display_edit_collapsed($lesson, $lesson->firstpageid);
-            break;
         case 'single':
             $pageid =  required_param('pageid', PARAM_INT);
             $PAGE->url->param('pageid', $pageid);
@@ -65,6 +62,10 @@ if (!$lesson->has_pages()) {
             break;
         case 'full':
             echo $lessonoutput->display_edit_full($lesson, $lesson->firstpageid, 0);
+            break;
+        case 'collapsed':
+        default:
+            echo $lessonoutput->display_edit_collapsed($lesson, $lesson->firstpageid);
             break;
     }
 }

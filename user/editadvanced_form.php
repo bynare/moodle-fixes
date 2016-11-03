@@ -82,12 +82,7 @@ class user_editadvanced_form extends moodleform {
 
             $passwordurl = $authinst->change_password_url();
             if (!($authinst->can_change_password() && empty($passwordurl))) {
-                if ($userid < 1 and $authinst->is_internal()) {
-                    // This is unlikely but we can not create account without password
-                    // when plugin uses passwords, we need to set it initially at least.
-                } else {
-                    $cannotchangepass[] = $auth;
-                }
+                $cannotchangepass[] = $auth;
             }
             if (is_enabled_auth($auth)) {
                 $authoptions[$enabled][$auth] = get_string('pluginname', "auth_{$auth}");
@@ -266,7 +261,7 @@ class user_editadvanced_form extends moodleform {
                 }
             } else if (!$user) {
                 $auth = get_auth_plugin($usernew->auth);
-                if ($auth->is_internal()) {
+                if ($auth->is_internal() && $auth->can_change_password()) {
                     // Internal accounts require password!
                     $err['newpassword'] = get_string('required');
                 }

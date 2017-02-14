@@ -191,16 +191,14 @@ function core_login_process_password_set($token) {
         // There is no valid reset request record - not even a recently expired one.
         // (suspicious)
         // Direct the user to the forgot password page to request a password reset.
-        echo $OUTPUT->header();
-        notice(get_string('noresetrecord'), $forgotpasswordurl);
+        redirect($forgotpasswordurl, get_string('noresetrecord'));
         die; // Never reached.
     }
     if ($user->timerequested < (time() - $pwresettime)) {
         // There is a reset record, but it's expired.
         // Direct the user to the forgot password page to request a password reset.
         $pwresetmins = floor($pwresettime / MINSECS);
-        echo $OUTPUT->header();
-        notice(get_string('resetrecordexpired', '', $pwresetmins), $forgotpasswordurl);
+        redirect($forgotpasswordurl, get_string('resetrecordexpired', '', $pwresetmins));
         die; // Never reached.
     }
 
